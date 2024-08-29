@@ -1,4 +1,7 @@
 import newGame from './newGame.js'
+import {refreshLayer} from './game/layers.js'
+import {loadOres} from './ui/ores.js'
+import {loadShop} from "./ui/shop.js"
 
 export function loadLocalStorage() {
 	if (false) {//window.localStorage.getItem("game")) {
@@ -7,8 +10,11 @@ export function loadLocalStorage() {
 		window.Game = window.localStorage.getItem("game")
 	} else {
     	window.Game = newGame;
+    	refreshLayer(1)
     	window.Game.last_moment = Date.now();
   	}
+  	loadOres()
+  	loadShop()
   	console.dir(window.Game)
 }
 

@@ -1,16 +1,51 @@
 <head>
 	<script type="module" src="main.js"></script>
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="css/mines.css">
+	<link rel="stylesheet" href="css/shop.css">
 </head>
 <body>
-<h1> Snipeshot Game</h1>
+<div class="container">
+	<div class="header">
+		<h1> Idle Smelting Simulator</h1>
+		<div>Money: <div class="money" style="display: inline;"></div></div>
+		<div class="tab-list">
+			<button id="tab-mines" class="tab-header">Mines</button>
+			<button id="tab-shop" class="tab-header">Shop</button>
+			<button id="tab-settings" class="tab-header">Settings</button>
+		</div>
+		
+	</div>
+	<div class="main">
+		<!-- TAB MINES -->
+		<div class="tab tab-mines" >
+			<div class="mine_screen">
+				<h2>Mines</h2>
+				<div id="ore_inventory" class="ore_inventory">
+				</div>
+				<div id="mine_layer" class="mine_layer">
+				</div>
+				
+			</div>
 
-<div class="tab tab-one">
-	<span>Stone: <div class="stone">0</div></span>
-	<span>Iron: <div class="iron">0</div></span>
-	<span>Gold: <div class="gold">0</div></span>
-</div>
-<div class="footer">
-	<button id="import">Import</button>
-	<button id="export">Export</button>
+		</div>
+		<!-- END MINES -->
+
+		<!-- TAB SHOP -->
+		<div class="tab tab-shop">
+			<div class="shop_screen">
+				<h2>Shop</h2>
+				<div id="sell_container" class="sell_container"></div>
+				<div id="buy_container" class="buy_container"></div>
+			</div>
+		</div>
+		<!-- END SHOP -->
+	</div>
+	<div class="footer">
+		<!--
+		<button id="import">Import</button>
+		<button id="export">Export</button>
+		-->
+	</div>
 </div>
 </body>
