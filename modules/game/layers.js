@@ -11,6 +11,14 @@ export function refreshLayer(layer_index) {
 
 }
 
+export function unlockLayer(layer_index) {
+	for (const ore_type of Object.keys(Layers[layer_index - 1]["ores"])) {
+		if (!Game.ores.hasOwnProperty(ore_type)) {
+			Game.ores[ore_type] = 0
+		}
+	}
+}
+
 export function rollNewOre(layer_index) {
 	var random = Math.random()
 	var check = 0;
@@ -22,7 +30,7 @@ export function rollNewOre(layer_index) {
 	}
 	//Loop should always stop before finish
 	console.log("Error When rolling for ore")
-	return "A"
+	return (Object.keys(Game.ores)[0])
 }
 
 export function offlineLayerMining(layer_index, hits, damage) {

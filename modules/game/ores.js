@@ -17,11 +17,12 @@ export function damageOre(ore_id, damage) {
 	if (damage == -1) {
 		damage = getPlayerDamage()
 	}
-	console.log(ore_id)
 	var ore = Game.active_layer.ores[ore_id]
 	ore["damage"] += damage
 	if (ore["damage"] >= Ores[ore["type"]]["hp"]) {
 		removeOre(ore_id)
+	} else if (ore["damage"] >= Ores[ore["type"]]["hp"] / 2) {
+		window.Ui_queue.push(["UPDATE_ORE_IMAGE", ore_id])
 	}
 }
 

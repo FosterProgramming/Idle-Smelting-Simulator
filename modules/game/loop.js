@@ -53,7 +53,7 @@ function bigUpdate(delta_time) {
 	var minerDamage = getMinerDamage()
 	var hits = Math.floor(delta_time / minerTime)
 	var result = offlineLayerMining(Game.active_layer.index, hits, minerDamage)
-	for (const [ore_type, amount] of result) {
+	for (const [ore_type, amount] of Object.entries(result)) {
 		Game.ores[ore_type] += amount
 	}
 	delta_time -= (hits * delta_time)

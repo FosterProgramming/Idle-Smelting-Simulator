@@ -1,5 +1,5 @@
 import newGame from './newGame.js'
-import {refreshLayer} from './game/layers.js'
+import {refreshLayer, unlockLayer} from './game/layers.js'
 import {loadOres} from './ui/ores.js'
 import {loadShop} from "./ui/shop.js"
 
@@ -8,6 +8,7 @@ export function loadLocalStorage() {
 		window.Game = JSON.parse(window.localStorage.getItem("game"))
 	} else {
     	window.Game = newGame;
+    	unlockLayer(1)
     	refreshLayer(1)
     	window.Game.last_moment = Date.now();
   	}
@@ -27,7 +28,6 @@ export function importSave() {
 }
 export function autoSave() {
 	window.localStorage.setItem("game", JSON.stringify(window.Game))
-	console.log("autoSave")
 }
 
 export function resetSave() {

@@ -6,7 +6,6 @@ export function uiLoop() {
 	cleanQueue()
 	updateValue(".money", ["money"])
 	var active_tab = document.querySelector(".tab-header.active").id;
-	var uiList = ["ore_A", "ore_B", "ore_C", "money"]
 	if (active_tab == "tab-mines") {
 		mineLoop()
 	} else if (active_tab == "tab-shop") {
@@ -16,16 +15,16 @@ export function uiLoop() {
 }
 
 function mineLoop() {
-	updateValue(".tab-mines .ore_A", ["ores", "A"])
-	updateValue(".tab-mines .ore_B", ["ores", "B"])
-	updateValue(".tab-mines .ore_C", ["ores", "C"])
+	for (const ore_type of Object.keys(Game.ores)) {
+		updateValue(".tab-mines .ore_" + ore_type, ["ores", ore_type])
+	}
 	refreshMineOres()
 }
 
 function shopLoop() {
-	updateValue(".tab-shop .ore_A", ["ores", "A"])
-	updateValue(".tab-shop .ore_B", ["ores", "B"])
-	updateValue(".tab-shop .ore_C", ["ores", "C"])
+	for (const ore_type of Object.keys(Game.ores)) {
+		updateValue(".tab-shop .ore_" + ore_type, ["ores", ore_type])
+	}
 	updatePurchaseClass()
 }
 
@@ -43,13 +42,18 @@ function updateValue(selector, path) {
 
 function cleanQueue() {
 	for (var i = 0; i < window.Ui_queue.length; i++) {
-		event = window.Ui_queue.shift()
+
+		var event = window.Ui_queue.shift()
 		if (event[0] == "REMOVE_ORE") {
 			document.getElementById(event[1]).remove()
 		} else if (event[0] == "REMOVE_ALL_ORES") {
 			for (const [key, value] of Object.entries(Game.active_layer.ores)) {
 				document.getElementById(key).remove()
 			}
+		} else if (event[0] == "UPDATE_ORE_IMAGE") {
+			var src = document.getElementById(event[1]).src
+			src = src.replace('.png', '_damaged.png')
+			document.getElementById(event[1]).src = src
 		}
 	}
 }

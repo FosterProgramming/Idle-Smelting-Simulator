@@ -1,5 +1,7 @@
 import {sellOre, damageOre} from "../game/ores.js"
+import {Ores} from "../game/constants.js"
 
+const Ore_Size = 64
 export function loadOres() {
 	for (const [key, value] of Object.entries(Game.ores)) {
 		var div = makeSellableOreDiv(key)
@@ -96,16 +98,15 @@ export function refreshMineOres() {
 function makeOrePosition(parent_layer, all_positions) {
 	var valid_position = false
 	var rect =  parent_layer.getBoundingClientRect()
-	const size = 32
 	const max_tries = 50;
 	var i = 0;
 	while (!valid_position) {
 		i++;
 		valid_position = true
-		var x = Math.floor(Math.random() * (rect.width - size * 2) + rect.x + size)
-		var y = Math.floor(Math.random() * (rect.height - size * 2) + rect.y + size)
+		var x = Math.floor(Math.random() * (rect.width - Ore_Size * 2) + rect.x + Ore_Size)
+		var y = Math.floor(Math.random() * (rect.height - Ore_Size * 2) + rect.y + Ore_Size)
 		for (var i = 0; i < all_positions.length; i++) {
-			if (Math.abs(x - all_positions[i][0]) < size * 1.5 && Math.abs(y - all_positions[i][1]) < size * 1.5) {
+			if (Math.abs(x - all_positions[i][0]) < Ore_Size * 1.5 && Math.abs(y - all_positions[i][1]) < Ore_Size * 1.5) {
 				valid_position = false;
 				break;
 			}
@@ -121,13 +122,7 @@ function makeOrePosition(parent_layer, all_positions) {
 
 function addMineOrePicture(ore_id, ore_data) {
 	var img = document.createElement("img")
-	if (ore_data["type"] == "A") {
-		img.src = "images/green_square.png"
-	} else if  (ore_data["type"] == "B") {
-		img.src = "images/blue_square.png"
-	} else if  (ore_data["type"] == "C") {
-		img.src = "images/red_square.png"
-	}
+	img.src = "images/" + Ores[ore_data["type"]]["image"]
 	img.id = ore_id
 	img.className = "ore_image"
 
