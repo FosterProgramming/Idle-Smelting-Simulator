@@ -15,3 +15,5 @@ export const Ores = {
 export const Layers = [
 	{"ores": {"A": 0.75, "B": 0.2, "C": 0.05}}
 ]
+
+export const Max_Ores = 8

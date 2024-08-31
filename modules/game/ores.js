@@ -1,30 +1,40 @@
 import {Ores, Layers} from './constants.js'
 import {rollNewOre} from "./layers.js"
-import {getPlayerDamage} from "./player.js"
+import {getPlayerDamage, respawnOreTime} from "./player.js"
 
 export function sellOre(ore, amount) {
 	if (amount == -1) {
 		//SELL ALL
 		amount = Game.ores[ore]
 	}
-	Game.money += Ores[ore]["value"] * amount;
-	Game.ores[ore] -= amount;
+	if (Game.ores[ore] >= amount) {
+		Game.money += Ores[ore]["value"] * amount;
+		Game.ores[ore] -= amount;
+	}
 }
 
 export function damageOre(ore_id, damage) {
 	if (damage == -1) {
 		damage = getPlayerDamage()
 	}
+	console.log(ore_id)
 	var ore = Game.active_layer.ores[ore_id]
 	ore["damage"] += damage
 	if (ore["damage"] >= Ores[ore["type"]]["hp"]) {
-		replaceOre(ore_id)
+		removeOre(ore_id)
 	}
 }
 
-function replaceOre(ore_id) {
-	var ore = rollNewOre(Game.active_layer.index)
+function removeOre(ore_id) {
 	Game.ores[Game.active_layer["ores"][ore_id]["type"]] += 1
-	Game.active_layer["ores"][ore_id] = {"type": ore, "damage": 0}
+	Game.active_layer.available_ores.push(ore_id)
+	delete Game.active_layer.ores[ore_id]
 	window.Ui_queue.push(["REMOVE_ORE", ore_id])
 }
+
+export function spawnOre() {
+	var ore = rollNewOre(Game.active_layer.index)
+	var ore_id = Game.active_layer.available_ores.shift()
+	Game.active_layer.ores[ore_id] = {"type": ore, "damage": 0}
+}
+

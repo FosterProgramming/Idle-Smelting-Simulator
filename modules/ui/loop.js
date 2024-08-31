@@ -47,8 +47,8 @@ function cleanQueue() {
 		if (event[0] == "REMOVE_ORE") {
 			document.getElementById(event[1]).remove()
 		} else if (event[0] == "REMOVE_ALL_ORES") {
-			for (var i = 0; i < 8; i++) {
-				document.getElementById("ore_" + i).remove()
+			for (const [key, value] of Object.entries(Game.active_layer.ores)) {
+				document.getElementById(key).remove()
 			}
 		}
 	}

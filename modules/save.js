@@ -4,10 +4,8 @@ import {loadOres} from './ui/ores.js'
 import {loadShop} from "./ui/shop.js"
 
 export function loadLocalStorage() {
-	if (false) {//window.localStorage.getItem("game")) {
-	//	Game = require('./newGame.json');
-	//} else {
-		window.Game = window.localStorage.getItem("game")
+	if (window.localStorage.getItem("game")) {
+		window.Game = JSON.parse(window.localStorage.getItem("game"))
 	} else {
     	window.Game = newGame;
     	refreshLayer(1)
@@ -28,5 +26,11 @@ export function importSave() {
 	window.Game.last_moment = Date.now();
 }
 export function autoSave() {
-	window.localStorage.setItem("game", window.Game)
+	window.localStorage.setItem("game", JSON.stringify(window.Game))
+	console.log("autoSave")
+}
+
+export function resetSave() {
+	window.localStorage.removeItem("game")
+	location.reload()
 }

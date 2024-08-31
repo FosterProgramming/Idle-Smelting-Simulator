@@ -33,6 +33,7 @@
 	grid-column: 2;
   	border: none;
   	background-color: #000;
+  	user-select: none;
   	
   	/*display:inline;*/
 }

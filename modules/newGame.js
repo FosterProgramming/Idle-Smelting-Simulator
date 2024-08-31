@@ -11,6 +11,7 @@ export default {
     "unlocks": {
 
     },
-    "money": 0,
+    "miner_timebank": 0,
+    "money": 100000,
     "total_time": 0
 }

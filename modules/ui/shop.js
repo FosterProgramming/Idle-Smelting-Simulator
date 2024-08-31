@@ -2,9 +2,20 @@ import {Shop_Upgrades} from "../game/unlocks.js"
 import {buyShopUpgrade} from "../game/shop.js"
 
 export function loadShop() {
-	for (const [key, value] of Object.entries(Shop_Upgrades)) {
-		var div = makeShopItemDiv(key)
-		document.querySelector('.buy_container').appendChild(div)
+	var elements = document.querySelectorAll('.shop_upgrade');
+	for (var i = 0; i < elements.length; i++) {
+		elements[i].remove()
+	}
+	for (const shop_id of Object.keys(Shop_Upgrades)) {
+		if (Game.unlocks[Shop_Upgrades[shop_id].unlock] === true) {
+			continue;
+		}
+		if (Shop_Upgrades[shop_id].requires === null || 
+			Game.unlocks[Shop_Upgrades[shop_id].requires] === true) {
+			var div = makeShopItemDiv(shop_id)
+			document.querySelector('.buy_container').appendChild(div)
+		}
+		
 	}
 }
 

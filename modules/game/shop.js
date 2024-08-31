@@ -1,4 +1,5 @@
 import {Shop_Upgrades} from "./unlocks.js"
+import {loadShop} from "../ui/shop.js"
 
 export function buyShopUpgrade(upgrade_id) {
 	var upgrade = Shop_Upgrades[upgrade_id]
@@ -7,5 +8,6 @@ export function buyShopUpgrade(upgrade_id) {
 	}
 	Game.money -= upgrade.cost
 	Game.unlocks[upgrade.unlock] = true
+	loadShop()
 	return true
 }

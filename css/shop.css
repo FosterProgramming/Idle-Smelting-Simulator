@@ -48,6 +48,11 @@
 	background-color: green
 }
 
+.shop_upgrade.purchased button{
+	display: none;
+}
+
+
 .shop_upgrade.can_buy {
 	background-color: blue
 }
