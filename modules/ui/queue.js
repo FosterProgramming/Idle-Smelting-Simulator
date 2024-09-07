@@ -1,0 +1,61 @@
+import {activateLayer, updateUnlockedSign} from "./mines.js"
+import {loadOre} from './ores.js'
+
+export function cleanQueue() {
+	for (var i = 0; i < window.Ui_queue.length; i++) {
+
+		var event = window.Ui_queue.shift()
+		if (event[0] == "REMOVE_ORE") {
+			document.getElementById(event[1]).remove()
+		} else if (event[0] == "REMOVE_ALL_ORES") {
+			var ores = document.querySelectorAll(".ore_image")
+			for (var i = 0; i < ores.length; i++) {
+				ores[i].remove()
+			}
+		} else if (event[0] == "UPDATE_ORE_IMAGE") {
+			var src = document.getElementById(event[1]).src
+			src = src.replace('.png', '_damaged.png')
+			document.getElementById(event[1]).src = src
+		} else if (event[0] == "POPUP") {
+			var popup = makePopup(event[1])
+			document.body.appendChild(popup)
+		} else if (event[0] == "ACTIVATE_LAYER") {
+			activateLayer()
+		} else if (event[0] == "UPDATE_LAYER_SIGN") {
+			updateUnlockedSign(event[1])
+		} else if (event[0] == "ADD_ORE") {
+			loadOre(event[1])
+		}
+	}
+}
+
+export function pushUniqueEventToQueue(event) {
+	var event_already_exists = false;
+	for (var i = 0; i < window.Ui_queue.length; i++) {
+		if (JSON.stringify(window.Ui_queue[i]) === JSON.stringify(event)) {
+			event_already_exists = true;
+		}
+	}
+	if (!event_already_exists) {
+		window.Ui_queue.push(event)
+	}
+}
+
+function pushToQueue(event) {
+	window.Ui_queue.push(event)
+}
+
+function makePopup(text) {
+	var div = document.createElement("div")
+	div.className = "popup"
+	var text_div = document.createElement("div")
+	text_div.textContent = text
+	var close_button = document.createElement("button");
+	close_button.textContent = "OK"
+	close_button.onclick = function() {
+		document.querySelector(".popup").remove()
+	}
+	div.appendChild(text_div);
+	div.appendChild(close_button);
+	return div
+}

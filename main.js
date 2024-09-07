@@ -10,6 +10,7 @@ loadLocalStorage()
 
 setInterval(gameLoop, Game.settings.game_tick); 
 setInterval(uiLoop, Game.settings.visual_tick);
+console.log(Game)
 setInterval(autoSave, 5000);
 
 //Ores positions are absolute and get messed up when viewport changes so we need to reset them

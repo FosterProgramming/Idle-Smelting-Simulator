@@ -4,9 +4,6 @@ export default {
         "visual_tick": 100
 	},
     "ores": {
-        "A": 0,
-        "B": 0,
-        "C": 0
     },
     "unlocks": {
 

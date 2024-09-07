@@ -19,26 +19,62 @@
 	padding-bottom: 10px;
 }
 
-.mine_layer > img {
-	cursor: pointer;
-}
-
 .ore_inventory .ore {
 	float: right;
 }
 
-.mine_layer {
+.mine_layers {
 	/*grid-row: 0 | 3;*/
 	grid-row: 2;
 	grid-column: 2;
-  	border: none;
-  	background-color: #000;
-  	user-select: none;
-  	
-  	/*display:inline;*/
+	height: calc(100vh - 250px);
+	overflow-y: scroll;
+  	display: grid;
+  	grid-auto-rows: 300px;
+  	gap: 10px;
+  	 grid-template-columns: unset; /* do not set template columns and rows */
+    grid-template-rows: unset;
+  	/*display:inline;
+
+  	display: grid 	
+  	grid-template-rows: repeat(auto-fill, 120px);
+  	grid-row-gap: .5em;
+  	*/
 }
 
+.dark_layer {
+	background: rgba(0, 0, 0, 0.7);
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: 10;
+}
+
+.layer_sign > div {
+	padding-top: 20px;
+}
+
+.layer_sign {
+	height: 100px;
+	top: 50px;
+	width: 200px;
+	position: relative;
+	background: rgba(255, 255, 255, 1);
+	cursor: pointer;
+	margin:auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.mine_layer {
+	position: relative;
+	background: rgba(219, 114, 48, 1);
+	/*background: linear-gradient(90deg, rgba(184,184,184,1) -1%, rgba(46,46,46,1) 100%);*/
+	user-select: none;
+}
 .ore_image {
 	position: absolute;
 	z-index: 1;
+	cursor: pointer;
 }

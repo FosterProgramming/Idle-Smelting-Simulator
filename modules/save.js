@@ -1,20 +1,22 @@
 import newGame from './newGame.js'
 import {refreshLayer, unlockLayer} from './game/layers.js'
-import {loadOres} from './ui/ores.js'
+import {loadAllOres} from './ui/ores.js'
 import {loadShop} from "./ui/shop.js"
+import {loadLayers} from "./ui/mines.js"
 
 export function loadLocalStorage() {
 	if (window.localStorage.getItem("game")) {
 		window.Game = JSON.parse(window.localStorage.getItem("game"))
+		loadAllOres()
 	} else {
     	window.Game = newGame;
-    	unlockLayer(1)
-    	refreshLayer(1)
-    	window.Game.last_moment = Date.now();
+    	Game.current_time = Date.now();
+    	Game.total_time = 0;
+    	unlockLayer(0)
   	}
-  	loadOres()
-  	loadShop()
-  	console.dir(window.Game)
+  	loadLayers()
+	loadShop()
+  	
 }
 
 export function exportSave() {
@@ -24,7 +26,6 @@ export function exportSave() {
 export function importSave() {
 	var save = prompt("Copy your save file here:")
 	window.Game = JSON.parse(atob(save))
-	window.Game.last_moment = Date.now();
 }
 export function autoSave() {
 	window.localStorage.setItem("game", JSON.stringify(window.Game))

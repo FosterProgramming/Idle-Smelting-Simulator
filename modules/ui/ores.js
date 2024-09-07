@@ -1,14 +1,19 @@
 import {sellOre, damageOre} from "../game/ores.js"
 import {Ores} from "../game/constants.js"
+import {pushUniqueEventToQueue} from "../ui/queue.js"
 
 const Ore_Size = 64
-export function loadOres() {
-	for (const [key, value] of Object.entries(Game.ores)) {
-		var div = makeSellableOreDiv(key)
-		document.querySelector('.sell_container').appendChild(div)
-		div = makeOreValueDiv(key)
-		document.querySelector('.ore_inventory').appendChild(div)
+export function loadAllOres() {
+	for (const ore_type of Object.keys(Game.ores)) {
+		loadOre(ore_type)
 	}
+}
+
+export function loadOre(ore_type) {
+	var div = makeSellableOreDiv(ore_type)
+	document.querySelector('.sell_container').appendChild(div)
+	div = makeOreValueDiv(ore_type)
+	document.querySelector('.ore_inventory').appendChild(div)
 }
 
 function makeOreValueDiv(ore) {
@@ -55,21 +60,12 @@ function makeSellableOreDiv(ore) {
 
 //Erase all ores from the UI so they can be redrawn elsewhere
 export function removeAllOres() {
-	var event_already_exists = false;
-	for (var i = 0; i < window.Ui_queue.length; i++) {
-		if (window.Ui_queue[i][0] == "REMOVE_ALL_ORES") {
-			event_already_exists = true;
-		}
-	}
-	if (!event_already_exists) {
-		window.Ui_queue.push(["REMOVE_ALL_ORES"])
-	}
-	
+	pushUniqueEventToQueue(["REMOVE_ALL_ORES"])
 }
 
 export function refreshMineOres() {
 	const layer_ores = Game.active_layer.ores
-	const parent_layer = document.getElementById("mine_layer");
+	const parent_layer = document.getElementById("layer_" + Game.active_layer.index);
 	var all_positions = []
 	for (const [key, value] of Object.entries(layer_ores)) {
 		var img = document.getElementById(key)
@@ -103,8 +99,8 @@ function makeOrePosition(parent_layer, all_positions) {
 	while (!valid_position) {
 		i++;
 		valid_position = true
-		var x = Math.floor(Math.random() * (rect.width - Ore_Size * 2) + rect.x + Ore_Size)
-		var y = Math.floor(Math.random() * (rect.height - Ore_Size * 2) + rect.y + Ore_Size)
+		var x = Math.floor(Math.random() * (rect.width - Ore_Size * 2) + Ore_Size)
+		var y = Math.floor(Math.random() * (rect.height - Ore_Size * 2) + Ore_Size)
 		for (var i = 0; i < all_positions.length; i++) {
 			if (Math.abs(x - all_positions[i][0]) < Ore_Size * 1.5 && Math.abs(y - all_positions[i][1]) < Ore_Size * 1.5) {
 				valid_position = false;

@@ -42,3 +42,13 @@ export function getMinerDamage() {
 	}
 	return value
 }
+
+export function hasUnlock(key) {
+	if (!(key in Game.unlocks)) {
+		return false
+	}
+	if (Game.unlocks[key] === true) {
+		return true
+	}
+	return false
+}
