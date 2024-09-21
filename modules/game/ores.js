@@ -1,18 +1,7 @@
 import {Ores, Layers} from './constants.js'
 import {rollNewOre} from "./layers.js"
-import {getPlayerDamage, respawnOreTime} from "./player.js"
+import {getPlayerDamage, respawnOreTime} from "./player_stats.js"
 import {pushUniqueEventToQueue} from "../ui/queue.js"
-
-export function sellOre(ore, amount) {
-	if (amount == -1) {
-		//SELL ALL
-		amount = Game.ores[ore]
-	}
-	if (Game.ores[ore] >= amount) {
-		Game.money += Ores[ore]["value"] * amount;
-		Game.ores[ore] -= amount;
-	}
-}
 
 export function damageOre(ore_id, damage) {
 	if (damage == -1) {
@@ -28,8 +17,9 @@ export function damageOre(ore_id, damage) {
 }
 
 function removeOre(ore_id) {
-	Game.ores[Game.active_layer["ores"][ore_id]["type"]] += 1
+	Game.inventory.ores[Game.active_layer["ores"][ore_id]["type"]] += 1
 	Game.active_layer.available_ores.push(ore_id)
+	Game.stats.ores_mined += 1
 	delete Game.active_layer.ores[ore_id]
 	pushUniqueEventToQueue(["REMOVE_ORE", ore_id])
 }

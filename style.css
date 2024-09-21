@@ -1,23 +1,70 @@
 body {
-	font-family: Verdana;
+	 font-family: "Roboto Condensed", sans-serif;
+	  
+	  font-style: normal;
 	background: rgb(245,241,225);
 	background: linear-gradient(180deg, rgba(245,241,225,1) 0%, rgba(153,131,93,1) 94%);
 	padding:0;
     margin:0;
 }
 
+h1 {
+	font-family: "Signika Negative", sans-serif;
+	border:solid;
+	text-align: center;
+	border-width: 3px;
+	width: fit-content;
+}
 
+.inventory h2{
+font-family: "Signika Negative", sans-serif;
+border:solid;
+border-width: 3px;
+text-align: center;
+cursor: pointer;
+}
+.inventory h2:hover{
+	background-color: lightgrey;
+}
 .container {
 	display: grid;
-	grid-template-rows: 150px auto 50px;
+	grid-template-rows: [top] 150px [header-line] calc(100vh - 200px) [footer-line] 50px [bottom];
 	height: 100%;
+	grid-template-columns: [left] 20% [inventory-line] auto [right];
+	grid-template-areas: 
+	"inventory header"
+	"inventory main"
+	"inventory footer";
 }
+
+.inventory {
+	grid-area: inventory;
+	border: double;
+	background-color: inherit;
+  	padding: 10px;
+  	/*
+  	border-top-style: none;
+	border-bottom-style: none;
+	*/
+}
+
+.inventory > div {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.inventory .value {
+	float: right;
+}
+
 
 .header {
 	justify-self: center;
+	grid-area: header;
 }
 
 .main {
+	grid-area: main;
 	border: groove;
 	border-color: black;
 	border-left-style: none;
@@ -25,24 +72,39 @@ body {
 }
 
 .footer {
+	grid-area: footer;
 	justify-self: center;
 }
 
 .tab-list {
 	float: bottom;
 }
+
 .tab-header {
+	font-family: "Signika Negative", sans-serif;
+	border: solid;
 	float: left;
 	cursor: pointer;
-	transition: 0.3s;
+	transition: 0.1s;
 	height: 50px;
 	width: 100px;
 	font-size: 20px;
+	background-color: inherit;
+	/*
 	background-image: url("images/wood.png");
 	color: #ccc;
+	*/
 	border-radius: 10px;
 }
 
+.tab-header:hover {
+	background-color: lightgrey;
+}
+
+.tab-header.active {
+	height: 55px;
+	width: 110px;
+}
 .popup {
 	z-index: 100;
 	position: fixed;

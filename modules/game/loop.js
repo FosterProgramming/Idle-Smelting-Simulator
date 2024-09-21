@@ -1,9 +1,11 @@
 import {formatDuration} from "../ui/format.js"
 import {spawnOre, damageOre} from "./ores.js"
-import {respawnOreTime, getMinerTime, getMinerDamage} from "./player.js"
+import {respawnOreTime, getMinerTime, getMinerDamage} from "./player_stats.js"
+import {checkProgress, checkAchievements} from "./player.js"
 import {Max_Ores} from './constants.js'
 import {offlineLayerMining} from './layers.js'
 import {cleanQueue, pushUniqueEventToQueue} from '../ui/queue.js'
+import {updateFurnaces} from "./smelters.js"
 
 export function gameLoop() {
 	const current_time = Date.now();
@@ -18,9 +20,19 @@ export function gameLoop() {
 		Game.total_time += delta_time;
 		updateGame(delta_time, Game.total_time);
 	}
+	Game.slow_update += delta_time
+	if (Game.slow_update > 5000) {
+		slowUpdate()
+		Game.slow_update = 0
+	}
+}
+
+function slowUpdate() {
+	checkAchievements()
 }
 
 function updateGame(delta_time) {
+	updateFurnaces(delta_time)
 	if (delta_time > 1000 * 1000) {
 		bigUpdate(delta_time)
 	} else if (delta_time > 1000) {
@@ -36,7 +48,7 @@ function updateGame(delta_time) {
 }
 
 function bigUpdate(delta_time) {
-	if (!Game.unlocks.mine_automation) {
+	if (!checkProgress("miner_robot", 1)) {
 		for (var i = 0; i < Max_Ores - Object.keys(Game.active_layer.ores).length; i++) {
 			spawnOre()
 		}
@@ -49,7 +61,7 @@ function bigUpdate(delta_time) {
 	var result = offlineLayerMining(Game.active_layer.index, hits, minerDamage)
 
 	for (const [ore_type, amount] of Object.entries(result)) {
-		Game.ores[ore_type] += amount
+		Game.inventory.ores[ore_type] += amount
 	}
 	delta_time -= (hits * delta_time)
 	basicUpdate(delta_time)
@@ -58,7 +70,7 @@ function bigUpdate(delta_time) {
 }
 function basicUpdate(delta_time) {
 	respawnOre(delta_time)
-	if (Game.unlocks.mine_automation === true && Object.keys(Game.active_layer.ores).length > 0) {
+	if (checkProgress("miner_robot", 1) && Object.keys(Game.active_layer.ores).length > 0) {
 		idleMining(delta_time)
 	}
 }

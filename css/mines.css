@@ -1,33 +1,17 @@
+/*
 .mine_screen {
 	display: grid;
 	grid-template-rows: 50px auto;
 	grid-template-columns: minmax(50px, 250px) auto;
 	height: 100%;
 }
-
-.ore_inventory {
-	/*grid-row: 0 | 3;*/
-	border: double;
-	grid-row: 2;
-	grid-column: 1;
-  	background-color: inherit;
-  	padding: 10px;
-}
-
-.ore_inventory > div {
-	padding-top: 10px;
-	padding-bottom: 10px;
-}
-
-.ore_inventory .ore {
-	float: right;
-}
+*/
 
 .mine_layers {
-	/*grid-row: 0 | 3;*/
+	/*grid-row: 0 | 3;
 	grid-row: 2;
-	grid-column: 2;
-	height: calc(100vh - 250px);
+	grid-column: 2;*/
+	height: 100%;/*calc(100vh - 200px)*/;
 	overflow-y: scroll;
   	display: grid;
   	grid-auto-rows: 300px;

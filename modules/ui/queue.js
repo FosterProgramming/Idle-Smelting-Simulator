@@ -1,7 +1,11 @@
 import {activateLayer, updateUnlockedSign} from "./mines.js"
-import {loadOre} from './ores.js'
+import {loadOre, loadInventoryIngot} from './inventory.js'
+import {loadShopIngot} from './shop.js'
+import {loadFurnace, updateFurnaceState, updateFurnaceHolding} from './furnaces.js'
+import {unlockTab} from "./tabs.js"
 
 export function cleanQueue() {
+	var active_tab = document.querySelector(".tab-header.active").id
 	for (var i = 0; i < window.Ui_queue.length; i++) {
 
 		var event = window.Ui_queue.shift()
@@ -25,8 +29,22 @@ export function cleanQueue() {
 			updateUnlockedSign(event[1])
 		} else if (event[0] == "ADD_ORE") {
 			loadOre(event[1])
+		} else if (event[0] == "ADD_FURNACE") {
+			loadIngot(event[1])
+		} else if (event[0] == "UPDATE_FURNACE") {
+			updateFurnaceState(event[1], event[2])
+		} else if (event[0] == "MOUSEUP" && active_tab == "tab-smelter") {
+			updateFurnaceHolding()
+		} else if (event[0] == "UNLOCK_TAB") {
+			unlockTab(event[1])
 		}
 	}
+}
+
+function loadIngot(ore_type) {
+	loadInventoryIngot(ore_type)
+	loadShopIngot(ore_type)
+	loadFurnace(ore_type)
 }
 
 export function pushUniqueEventToQueue(event) {

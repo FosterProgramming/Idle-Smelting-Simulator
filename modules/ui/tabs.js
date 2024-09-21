@@ -1,5 +1,12 @@
-export function clickTab(event) {
-	
+export function unlockAllTabs() {
+	for (const unlock_id of Object.keys(Game.progress)) {
+		if (unlock_id.startsWith("tab-")) {
+			unlockTab(unlock_id)
+		}
+	}
+}
+export function unlockTab(tab_id) {
+	document.getElementById(tab_id).style.display = "inline-block";
 }
 
 export function openTab(tab_id) {

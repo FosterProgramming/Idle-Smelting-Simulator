@@ -1,54 +1,53 @@
-export function getPlayerDamage() {
-	var damage = 1;
-	if (Game.unlocks.shop_click_damage_1 === true) {
-		damage += 1
-	}
-	if (Game.unlocks.shop_click_damage_2 === true) {
-		damage += 1
-	}
-	return damage;
+import {unlockFurnace} from "./smelters.js"
+import {Smelters} from "./constants.js"
+import {pushUniqueEventToQueue} from "../ui/queue.js"
+ 
+export function setProgress(key, level) {
+	Game.progress[key] = level
+	unlockEvent(key, level)
 }
 
-export function respawnOreTime() {
-	// return value in milliseconds
-	var respawn;
-	if (Game.unlocks.shop_ore_respawn_3 === true) {
-		respawn = 0;
-	} else if (Game.unlocks.shop_ore_respawn_2 === true) {
-		respawn = 1;
-	} else if (Game.unlocks.shop_ore_respawn_1 === true) {
-		respawn = 5;
-	} else {
-		respawn = 10;
-	}
-	return (1000 * respawn)
-}
-
-export function getMinerTime() {
-	var time = 5000
-	if (Game.unlocks.shop_miner_speed_1 === true) {
-		time = time / 2
-	}
-	return time
-}
-
-export function getMinerDamage() {
-	var value = 1
-	if (Game.unlocks.shop_miner_1 === true) {
-		value += 1
-	}
-	if (Game.unlocks.shop_miner_2 === true) {
-		value += 1
-	}
-	return value
-}
-
-export function hasUnlock(key) {
-	if (!(key in Game.unlocks)) {
+export function checkProgress(key, level) {
+	if (!(key in Game.progress)) {
 		return false
 	}
-	if (Game.unlocks[key] === true) {
-		return true
+	if (Game.progress[key] < level) {
+		return false
 	}
-	return false
+	return true
+}
+
+export function checkMultiRequirements(reqs) {
+	for (const [key, level] of Object.entries(reqs)) {
+		if (!checkProgress(key, level)) {
+			return false
+		}
+	}
+	return true
+}
+
+export function getProgressLevel(key) {
+	if (!(key in Game.progress)) {
+		return 0
+	} else {
+		return Game.progress[key]
+	}
+}
+
+export function checkAchievements() {
+	if (Game.stats.ingots_smelted >= 5) {
+		if (!checkProgress("tab-mines", 1)) {
+			setProgress("tab-mines", 1)
+		}
+	}
+}
+
+function unlockEvent(key, level) {
+	if (key == "furnace") {
+		var ore_type = Object.keys(Smelters)[level - 1]
+		unlockFurnace(ore_type)
+	}
+	if (key == "tab-mines") {
+		pushUniqueEventToQueue(["UNLOCK_TAB", "tab-mines"])
+	}
 }

@@ -3,26 +3,36 @@
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="css/mines.css">
 	<link rel="stylesheet" href="css/shop.css">
+	<link rel="stylesheet" href="css/smelters.css">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="container">
+	<div class="inventory">
+		<div>Money: <div class="money" style="display: inline;"></div></div>
+		<div class="dropdown opened" id="ores-dropdown"><h2>Ores</h2></div>
+		<div class="dropdown opened" id="ingots-dropdown"><h2>Ingots</h2></div>
+	</div>
+
 	<div class="header">
 		<h1> Idle Smelting Simulator</h1>
-		<div>Money: <div class="money" style="display: inline;"></div></div>
+		
 		<div class="tab-list">
-			<button id="tab-mines" class="tab-header">Mines</button>
+			<button id="tab-mines" class="tab-header" style="display:none">Mines</button>
+			<button id="tab-smelter" class="tab-header">Smelter</button>
 			<button id="tab-shop" class="tab-header">Shop</button>
 			<button id="tab-settings" class="tab-header">Settings</button>
 		</div>
 		
 	</div>
+
 	<div class="main">
 		<!-- TAB MINES -->
 		<div class="tab tab-mines" >
 			<div class="mine_screen">
-				<h2>Mines</h2>
-				<div id="ore_inventory" class="ore_inventory">
-				</div>
 				<div id="mine_layers" class="mine_layers">
 				</div>
 				
@@ -34,12 +44,24 @@
 		<!-- TAB SHOP -->
 		<div class="tab tab-shop">
 			<div class="shop_screen">
-				<h2>Shop</h2>
-				<div id="sell_container" class="sell_container"></div>
+				<div id="sell_container" class="sell_container">
+					<select id="ingot_select"></select>
+					<button id="sell_one">Sell 1</button>
+					<button id="sell_all">Sell All</button>
+				</div>
 				<div id="buy_container" class="buy_container"></div>
 			</div>
 		</div>
 		<!-- END SHOP -->
+
+		<!-- TAB SMELTER -->
+		<div class="tab tab-smelter">
+			<div class="smelter_screen">
+				<div id="smelter_container" class="smelter_container"></div>
+			</div>
+		</div>
+		<!-- END SMELTER -->
+
 
 		<!-- TAB SETTINGS -->
 		<div class="tab tab-settings">
@@ -50,11 +72,12 @@
 		<!-- END SETTINGS -->
 
 	</div>
+	<!--
 	<div class="footer">
-		<!--
+
 		<button id="import">Import</button>
 		<button id="export">Export</button>
-		-->
 	</div>
+	-->
 </div>
 </body>

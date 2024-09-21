@@ -1,13 +1,13 @@
 import {Layers} from "../game/constants.js"
 import {refreshLayer, tryUnlockingLayer} from "../game/layers.js"
-import {hasUnlock} from "../game/player.js"
+import {checkProgress} from "../game/player.js"
 import {pushUniqueEventToQueue} from "./queue.js"
 
 export function loadLayers() {
 	for(var i = 0; i < Layers.length; i++) {
 		var layer = makeLayer(i)
 		document.getElementById("mine_layers").appendChild(layer)
-		if (hasUnlock("layer_" + i)) {
+		if (checkProgress("layer", i)) {
 			 updateUnlockedSign(i)
 		}
 	}

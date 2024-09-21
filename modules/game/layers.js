@@ -1,7 +1,7 @@
 import {Layers, Max_Ores, Ores} from "./constants.js"
 import {pushUniqueEventToQueue} from "../ui/queue.js"
 import {activateLayer} from "../ui/mines.js"
-import {hasUnlock} from "./player.js"
+import {checkProgress, setProgress} from "./player.js"
 
 export function refreshLayer(layer_index) {
 	Game.active_layer = {"index": layer_index, "ores": {}, "respawnTime": 0}
@@ -17,22 +17,22 @@ export function refreshLayer(layer_index) {
 
 export function unlockLayer(layer_index) {
 	for (const ore_type of Object.keys(Layers[layer_index]["ores"])) {
-		if (!Game.ores.hasOwnProperty(ore_type)) {
-			Game.ores[ore_type] = 0
+		if (!Game.inventory.ores.hasOwnProperty(ore_type)) {
+			Game.inventory.ores[ore_type] = 0
 			pushUniqueEventToQueue(["ADD_ORE", ore_type])
 		}
 	}
-	Game.unlocks["layer_" + layer_index] = true
+	setProgress("layer", layer_index)
 	refreshLayer(layer_index)
 	pushUniqueEventToQueue(["UPDATE_LAYER_SIGN", layer_index])
 }
 
 export function tryUnlockingLayer(layer_index) {
 	var cost = Layers[layer_index]["cost"]
-	if (Game.money < cost || hasUnlock("layer_" + layer_index)) {
+	if (Game.inventory.money < cost || checkProgress("layer", layer_index)) {
 		return false
 	}
-	Game.money -= cost
+	Game.inventory.money -= cost
 	unlockLayer(layer_index)
 	return true
 }
@@ -48,7 +48,7 @@ export function rollNewOre(layer_index) {
 	}
 	//Loop should always stop before finish
 	console.log("Error When rolling for ore")
-	return (Object.keys(Game.ores)[0])
+	return (Object.keys(Game.inventory.ores)[0])
 }
 
 export function offlineLayerMining(layer_index, hits, damage) {

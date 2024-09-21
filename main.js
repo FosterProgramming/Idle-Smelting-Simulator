@@ -3,10 +3,14 @@ import {uiLoop} from './modules/ui/loop.js'
 import {removeAllOres} from './modules/ui/ores.js'
 import {openTab} from './modules/ui/tabs.js'
 import {loadLocalStorage, exportSave, importSave, resetSave, autoSave} from './modules/save.js'
+import {addInputEvents} from './modules/input.js'
 
-window.Ui_queue = [] 
-openTab("tab-mines")
+window.Ui_queue = []
+window.Cache = {}
+openTab("tab-smelter")
 loadLocalStorage()
+
+addInputEvents()
 
 setInterval(gameLoop, Game.settings.game_tick); 
 setInterval(uiLoop, Game.settings.visual_tick);
@@ -27,6 +31,10 @@ document.querySelector('#tab-mines').onclick = function() {
 
 document.querySelector('#tab-shop').onclick = function() {
 	openTab("tab-shop")
+}
+
+document.querySelector('#tab-smelter').onclick = function() {
+	openTab("tab-smelter")
 }
 
 document.querySelector('#tab-settings').onclick = function() {

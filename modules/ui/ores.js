@@ -1,62 +1,8 @@
-import {sellOre, damageOre} from "../game/ores.js"
+import {damageOre} from "../game/ores.js"
 import {Ores} from "../game/constants.js"
 import {pushUniqueEventToQueue} from "../ui/queue.js"
 
 const Ore_Size = 64
-export function loadAllOres() {
-	for (const ore_type of Object.keys(Game.ores)) {
-		loadOre(ore_type)
-	}
-}
-
-export function loadOre(ore_type) {
-	var div = makeSellableOreDiv(ore_type)
-	document.querySelector('.sell_container').appendChild(div)
-	div = makeOreValueDiv(ore_type)
-	document.querySelector('.ore_inventory').appendChild(div)
-}
-
-function makeOreValueDiv(ore) {
-	const div = document.createElement("div")
-	const text = document.createTextNode("ore " + ore + ":  ")
-	
-	const variableDiv = document.createElement("div");
-	variableDiv.className = "ore ore_" + ore
-	variableDiv.style.display = "inline";
-	div.appendChild(text)
-	div.appendChild(variableDiv)
-	return div
-
-}
-
-function makeSellableOreDiv(ore) {
-	const div = document.createElement("div")
-	div.appendChild(makeOreValueDiv(ore))
-	const sell_one = document.createElement("button");
-	sell_one.textContent = "Sell 1"
-	//sell_one.style.display = "block";
-	sell_one.style.float = "right";
-
-	//SELL ORE CLICK METHOD
-	sell_one.onclick = function() {
-		sellOre(ore, 1)
-	}
-	
-	const sell_all = document.createElement("button");
-	sell_all.textContent = "Sell All"
-	sell_all.style.display = "inline";
-	sell_all.style.float = "right";
-
-	//SELL ORE CLICK METHOD
-	sell_all.onclick = function() {
-		sellOre(ore, -1)
-	}
-
-	div.appendChild(sell_one)
-	div.appendChild(sell_all)
-	return div
-	
-}
 
 //Erase all ores from the UI so they can be redrawn elsewhere
 export function removeAllOres() {
@@ -116,10 +62,38 @@ function makeOrePosition(parent_layer, all_positions) {
 	return position
 }
 
+function laodTransformedImageFromCache(image_name, image_id) {
+	if (image_name in Cache) {
+		return Cache[image_name]
+	}
+	var canvas = document.createElement("canvas")
+	canvas.height = 64
+	canvas.width = 64
+	var context = canvas.getContext("2d");
+	const img = new Image();
+	img.onload = () => {
+		context.drawImage(img, 0, 0)
+		const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  		const data = imageData.data;
+  		for (let i = 0; i < data.length; i += 4) {
+			if (data[i] == 70 && data[i + 1] == 70 && data[i + 2] == 70) {
+				data[i + 3] = 0
+			}
+		}
+		context.putImageData(imageData, 0, 0);
+		var data_url = canvas.toDataURL();
+		Cache[image_name] = data_url;
+		document.getElementById(image_id).src = data_url
+	}
+	img.src = "images/" + image_name
+	return ""
+}
+
 function addMineOrePicture(ore_id, ore_data) {
-	var img = document.createElement("img")
-	img.src = "images/" + Ores[ore_data["type"]]["image"]
+	
+	const img = new Image();
 	img.id = ore_id
+	img.src = laodTransformedImageFromCache(Ores[ore_data["type"]]["image"], ore_id)
 	img.className = "ore_image"
 
 	// CLICK ORE IN MINE METHOD

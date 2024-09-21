@@ -2,7 +2,7 @@ export const Ores = {
 		"A": {
 			"value": 1,
 			"hp": 1,
-			"image": "green_square.png"
+			"image": "copper.png"
 
 		},
 		"B": {
@@ -28,4 +28,29 @@ export const Layers = [
 	{"cost": 5000, "ores": {"D": 1}}
 ]
 
+export const Smelters = {
+	"A": {
+		"base_capacity": 1,
+		"base_efficiency": 10,
+		"base_time": 10000
+	},
+	"B": {
+		"base_capacity": 1,
+		"base_efficiency": 10,
+		"base_time": 10000
+	},
+	"C": {
+		"base_capacity": 1,
+		"base_efficiency": 10,
+		"base_time": 10000
+	},
+	"D": {
+		"base_capacity": 1,
+		"base_efficiency": 10,
+		"base_time": 10000
+	},
+
+}
+
+export const Smelter_Load_Time = 5000 //in milliseconds
 export const Max_Ores = 3

@@ -1,14 +1,12 @@
 .shop_screen {
 	display: grid;
-	grid-template-rows: 50px  auto;
-	grid-template-columns: minmax(50px, 250px) auto;
+	grid-template-rows: 100px  auto;
 	height: 100%;
+	background-color: inherit;
 }
 
 .buy_container {
 	grid-row: 2;
-	grid-column: 2;
-  	background-color: inherit;
 	border: double;
 	display: grid;
 	grid-template-rows: 100px;
@@ -21,9 +19,7 @@
 .sell_container {
 	/*grid-row: 0 | 3;*/
 	border: double;
-	grid-row: 2;
-	grid-column: 1;
-  	background-color: inherit;
+	grid-row: 1;
   	padding: 10px;
 }
 
