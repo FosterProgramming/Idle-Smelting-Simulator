@@ -1,4 +1,4 @@
-import {Smelters} from "./constants.js"
+import {Smelters, Layers, Ores} from "./constants.js"
 import {checkProgress} from "./player.js"
 
 export function getPlayerDamage() {
@@ -12,19 +12,35 @@ export function getPlayerDamage() {
 	return damage;
 }
 
-export function respawnOreTime() {
+export function getOreMultiplier(ore_type, layer_index) {
+	var multiplier = 1
+	multiplier *= Layers[layer_index]["multipliers"][ore_type]
+	return multiplier
+}
+
+export function respawnOreTime(layer_index) {
 	// return value in milliseconds
-	var respawn;
+	var respawn = Layers[layer_index]["respawn_time"];
 	if (checkProgress("shop_ore_respawn", 3)) {
 		respawn = 0;
 	} else if (checkProgress("shop_ore_respawn", 2)) {
-		respawn = 1;
+		respawn = Math.max(1, respawn - 9);
 	} else if (checkProgress("shop_ore_respawn", 1)) {
-		respawn = 5;
-	} else {
-		respawn = 10;
+		respawn = Math.max(1, respawn - 5);
 	}
 	return (1000 * respawn)
+}
+
+export function getOrePrice(ore_type) {
+	var price = Ores[ore_type]["value"]
+	if (ore_type == "A") {
+		if (checkProgress("shop_sell_price_A", 2)) {
+			price *= 4
+		} else if (checkProgress("shop_sell_price_A", 1)) {
+			price *= 2
+		}
+	}
+	return price
 }
 
 export function getMinerTime() {
@@ -48,6 +64,9 @@ export function getMinerDamage() {
 
 function getSmelterCapacity(ore_type) {
 	var capacity = Smelters[ore_type]["base_capacity"]
+	if (ore_type == "A" && checkProgress("bonus_capacity_A", 1)) {
+		capacity *= 2
+	} 
 	return capacity
 
 }

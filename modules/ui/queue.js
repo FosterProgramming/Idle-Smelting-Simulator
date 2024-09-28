@@ -1,16 +1,26 @@
-import {activateLayer, updateUnlockedSign} from "./mines.js"
+import {activateLayer, unlockLayerUI} from "./mines.js"
 import {loadOre, loadInventoryIngot} from './inventory.js'
 import {loadShopIngot} from './shop.js'
 import {loadFurnace, updateFurnaceState, updateFurnaceHolding} from './furnaces.js'
-import {unlockTab} from "./tabs.js"
+import {unlockTab, addTabNotification} from "./tabs.js"
+import {addRobotPicture, setRobotPosition} from "./ores.js"
+import {startAnimationCycle} from "./animations.js"
 
 export function cleanQueue() {
 	var active_tab = document.querySelector(".tab-header.active").id
-	for (var i = 0; i < window.Ui_queue.length; i++) {
 
+	for (var i = 0; i < window.Ui_queue.length; i++) {
 		var event = window.Ui_queue.shift()
 		if (event[0] == "REMOVE_ORE") {
-			document.getElementById(event[1]).remove()
+			if (window.WaitOreRemove) {
+				pushUniqueEventToQueue(event)
+			} else {
+				var ore = document.getElementById(event[1])
+				if (ore) {
+					ore.remove()
+				}
+				setRobotPosition()
+			}
 		} else if (event[0] == "REMOVE_ALL_ORES") {
 			var ores = document.querySelectorAll(".ore_image")
 			for (var i = 0; i < ores.length; i++) {
@@ -25,8 +35,8 @@ export function cleanQueue() {
 			document.body.appendChild(popup)
 		} else if (event[0] == "ACTIVATE_LAYER") {
 			activateLayer()
-		} else if (event[0] == "UPDATE_LAYER_SIGN") {
-			updateUnlockedSign(event[1])
+		} else if (event[0] == "UNLOCK_LAYER") {
+			unlockLayerUI(event[1])
 		} else if (event[0] == "ADD_ORE") {
 			loadOre(event[1])
 		} else if (event[0] == "ADD_FURNACE") {
@@ -37,6 +47,17 @@ export function cleanQueue() {
 			updateFurnaceHolding()
 		} else if (event[0] == "UNLOCK_TAB") {
 			unlockTab(event[1])
+			addTabNotification(event[1])
+		} else if (event[0] == "ADD_ROBOT") {
+			addRobotPicture()
+		} else if (event[0] == "ROBOT_ORE_DAMAGE" && active_tab == "tab-mines") {
+			window.WaitOreRemove = true
+			var robot = document.getElementById("robot_miner")
+			startAnimationCycle(robot.id, [
+				{"frame": [1, 0], "time": 100, "callback": () => {return null}},
+				{"frame": [0, 0], "time": 100, "callback": () => {window.WaitOreRemove = false;}},
+				{"frame": [0, 0], "time": 0, "callback": () => {return null}},
+			])
 		}
 	}
 }

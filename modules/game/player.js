@@ -28,16 +28,26 @@ export function checkMultiRequirements(reqs) {
 
 export function getProgressLevel(key) {
 	if (!(key in Game.progress)) {
-		return 0
+		return -1
 	} else {
 		return Game.progress[key]
 	}
 }
 
 export function checkAchievements() {
-	if (Game.stats.ingots_smelted >= 5) {
+	if (Game.stats.ingots_smelted.total >= 5) {
 		if (!checkProgress("tab-mines", 1)) {
 			setProgress("tab-mines", 1)
+		}
+	}
+	if (Game.stats.ores_mined.A >= 6) {
+		if (!checkProgress("tab-shop", 1)) {
+			setProgress("tab-shop", 1)
+		}
+	}
+	if (Game.stats.ingots_smelted.A >= 10) {
+		if (!checkProgress("bonus_capacity_A", 1)) {
+			setProgress("bonus_capacity_A", 1)
 		}
 	}
 }
@@ -49,5 +59,11 @@ function unlockEvent(key, level) {
 	}
 	if (key == "tab-mines") {
 		pushUniqueEventToQueue(["UNLOCK_TAB", "tab-mines"])
+	}
+	if (key == "tab-shop") {
+		pushUniqueEventToQueue(["UNLOCK_TAB", "tab-shop"])
+	}
+	if (key == "mine_automation") {
+		pushUniqueEventToQueue(["ADD_ROBOT"])
 	}
 }

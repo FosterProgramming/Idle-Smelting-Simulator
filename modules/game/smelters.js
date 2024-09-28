@@ -59,9 +59,19 @@ export function emptySmelter(ore_type) {
 	if (!(Game.furnaces[ore_type].state === "FINISHED")) {
 		return false
 	}
-	Game.inventory.ingots[ore_type] += getSmelterProduction(ore_type)
-	Game.stats.ingots_smelted += getSmelterProduction(ore_type)
+	var production = getSmelterProduction(ore_type)
+	Game.inventory.ingots[ore_type] += production
+	smelterStats(production, ore_type)
 	Game.furnaces[ore_type].time_bar = 0
 	changeFurnaceState(ore_type, "LOADING")
 	return true
+}
+
+function smelterStats(multiplier, ore_type) {
+	Game.stats.ingots_smelted.total += multiplier
+	if (ore_type in Game.stats.ingots_smelted) {
+		Game.stats.ingots_smelted[ore_type] += multiplier
+	} else {
+		Game.stats.ingots_smelted[ore_type] = multiplier
+	}
 }

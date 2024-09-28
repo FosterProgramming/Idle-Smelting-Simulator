@@ -19,7 +19,9 @@ export function uiLoop() {
 }
 
 function mineLoop() {
-	refreshMineOres()
+	if (Game.active_layer) {
+		refreshMineOres()
+	}
 }
 
 function shopLoop() {
@@ -35,7 +37,9 @@ function updateInventory() {
 	}
 	for (const ore_type of Object.keys(inventory.ingots)) {
 		var div = document.querySelector(".inventory .ingot_" + ore_type)
-		div.textContent = formatInteger(inventory.ingots[ore_type])
+		if (div) {
+			div.textContent = formatInteger(inventory.ingots[ore_type])
+		}
 	}
 }
 

@@ -2,6 +2,7 @@ import {Layers, Max_Ores, Ores} from "./constants.js"
 import {pushUniqueEventToQueue} from "../ui/queue.js"
 import {activateLayer} from "../ui/mines.js"
 import {checkProgress, setProgress} from "./player.js"
+import {unlockOre} from "./ores.js"
 
 export function refreshLayer(layer_index) {
 	Game.active_layer = {"index": layer_index, "ores": {}, "respawnTime": 0}
@@ -18,13 +19,12 @@ export function refreshLayer(layer_index) {
 export function unlockLayer(layer_index) {
 	for (const ore_type of Object.keys(Layers[layer_index]["ores"])) {
 		if (!Game.inventory.ores.hasOwnProperty(ore_type)) {
-			Game.inventory.ores[ore_type] = 0
-			pushUniqueEventToQueue(["ADD_ORE", ore_type])
+			unlockOre(ore_type)
 		}
 	}
 	setProgress("layer", layer_index)
 	refreshLayer(layer_index)
-	pushUniqueEventToQueue(["UPDATE_LAYER_SIGN", layer_index])
+	pushUniqueEventToQueue(["UNLOCK_LAYER", layer_index])
 }
 
 export function tryUnlockingLayer(layer_index) {

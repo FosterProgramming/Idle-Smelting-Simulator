@@ -14,7 +14,7 @@
 	height: 100%;/*calc(100vh - 200px)*/;
 	overflow-y: scroll;
   	display: grid;
-  	grid-auto-rows: 300px;
+  	grid-auto-rows: 450px;
   	gap: 10px;
   	 grid-template-columns: unset; /* do not set template columns and rows */
     grid-template-rows: unset;
@@ -55,10 +55,22 @@
 	position: relative;
 	background: rgba(219, 114, 48, 1);
 	/*background: linear-gradient(90deg, rgba(184,184,184,1) -1%, rgba(46,46,46,1) 100%);*/
-	user-select: none;
 }
 .ore_image {
 	position: absolute;
 	z-index: 1;
 	cursor: pointer;
+	border: solid black 3px;
+	border-radius: 5px;
+}
+
+.robot_image {
+	position: absolute;
+	z-index: 2;
+	object-fit: cover;
+	pointer-events: none
+}
+
+.ore_image:hover {
+	border-color: gold;
 }

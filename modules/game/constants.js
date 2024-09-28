@@ -21,18 +21,39 @@ export const Ores = {
 			"image": "blue_square.png"
 		}
 }
+
 export const Layers = [
-	{"cost": 0, "ores": {"A": 0.75, "B": 0.2, "C": 0.05}},
-	{"cost": 100, "ores": {"B": 0.75, "C": 0.2, "D": 0.05}},
-	{"cost": 1000, "ores": {"C": 0.75, "D": 0.25}},
-	{"cost": 5000, "ores": {"D": 1}}
+	{	
+		"cost": 0, 
+		"ores": {"A": 1}, 
+		"respawn_time": 2,
+		"multipliers": {"A": 1}
+	},
+	{
+		"cost": 100,
+		"ores": {"A": 0.5, "B": 0.4, "C": 0.1},
+		"respawn_time": 10,
+		"multipliers": {"A": 5, "B": 1, "C": 1}
+	},
+	{
+		"cost": 1000,
+		"ores": {"C": 0.75, "D": 0.25},
+		"respawn_time": 10,
+		"multipliers": {"C": 2, "D": 1}
+	},
+	{
+		"cost": 5000,
+		"ores": {"D": 1},
+		"respawn_time": 10,
+		"multipliers": {"D": 1}
+	}
 ]
 
 export const Smelters = {
 	"A": {
 		"base_capacity": 1,
-		"base_efficiency": 10,
-		"base_time": 10000
+		"base_efficiency": 5,
+		"base_time": 3000
 	},
 	"B": {
 		"base_capacity": 1,
@@ -52,5 +73,5 @@ export const Smelters = {
 
 }
 
-export const Smelter_Load_Time = 5000 //in milliseconds
-export const Max_Ores = 3
+export const Smelter_Load_Time = 2000 //in milliseconds
+export const Max_Ores = 8

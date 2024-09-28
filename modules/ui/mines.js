@@ -1,20 +1,37 @@
 import {Layers} from "../game/constants.js"
 import {refreshLayer, tryUnlockingLayer} from "../game/layers.js"
-import {checkProgress} from "../game/player.js"
+import {checkProgress, getProgressLevel} from "../game/player.js"
 import {pushUniqueEventToQueue} from "./queue.js"
+import {addRobotPicture} from "./ores.js"
 
 export function loadLayers() {
+	var max_layer = getProgressLevel("layer")
 	for(var i = 0; i < Layers.length; i++) {
 		var layer = makeLayer(i)
 		document.getElementById("mine_layers").appendChild(layer)
-		if (checkProgress("layer", i)) {
+		if (i <= max_layer) {
 			 updateUnlockedSign(i)
 		}
+		if (i <= (max_layer +1)) {
+			layer.style.display = "block";
+		}
 	}
-	pushUniqueEventToQueue(["ACTIVATE_LAYER"])
+	if (Game.active_layer) {
+		activateLayer()
+	}
 }
 
-export function updateUnlockedSign(index) {
+export function unlockLayerUI(index) {
+	updateUnlockedSign(index)
+	var layer_index = "layer_" + (index + 1)
+	var layer = document.getElementById(layer_index)
+	if (layer) {
+		layer.style.display = "block"
+	}
+	
+}
+
+function updateUnlockedSign(index) {
 	var sign = document.getElementById("layer_sign_" + index)
 	sign.innerHTML = "<div>Activate</div>"
 	sign.onclick = function() {
@@ -22,12 +39,11 @@ export function updateUnlockedSign(index) {
 		
 	}
 }
-
 export function makeLayer(index) {
 	var div = document.createElement("div")
 	div.className = "mine_layer"
 	div.id = "layer_" + index
-	
+	div.style.display = "none"
 
 	var dark_layer = document.createElement("div")
 	dark_layer.className = "dark_layer"
@@ -62,5 +78,13 @@ export function activateLayer() {
 	for (var i = 0; i < ores.length; i++) {
 		ores[i].remove()
 	}
+	if (checkProgress("mine_automation", 1)) {
+		var robot = document.getElementById("robot_miner")
+		if (robot) {
+			robot.remove()
+		}
+		addRobotPicture()
+	}
+	
 
 }

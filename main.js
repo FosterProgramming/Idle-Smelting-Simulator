@@ -1,7 +1,7 @@
 import {gameLoop} from './modules/game/loop.js'
 import {uiLoop} from './modules/ui/loop.js'
 import {removeAllOres} from './modules/ui/ores.js'
-import {openTab} from './modules/ui/tabs.js'
+import {openTab, addTabNotification} from './modules/ui/tabs.js'
 import {loadLocalStorage, exportSave, importSave, resetSave, autoSave} from './modules/save.js'
 import {addInputEvents} from './modules/input.js'
 
@@ -19,7 +19,6 @@ setInterval(autoSave, 5000);
 
 //Ores positions are absolute and get messed up when viewport changes so we need to reset them
 window.addEventListener("resize", removeAllOres)
-
 
 document.querySelector('#import').addEventListener('click', importSave)
 document.querySelector('#export').addEventListener('click', exportSave)

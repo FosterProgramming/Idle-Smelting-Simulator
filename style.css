@@ -6,6 +6,7 @@ body {
 	background: linear-gradient(180deg, rgba(245,241,225,1) 0%, rgba(153,131,93,1) 94%);
 	padding:0;
     margin:0;
+    user-select: none;
 }
 
 h1 {
@@ -94,6 +95,7 @@ cursor: pointer;
 	background-image: url("images/wood.png");
 	color: #ccc;
 	*/
+	position:relative;
 	border-radius: 10px;
 }
 
@@ -105,6 +107,15 @@ cursor: pointer;
 	height: 55px;
 	width: 110px;
 }
+
+.tab_notif {
+	position: absolute;
+	z-index: 1;
+	pointer-events: none;
+	top: 0px;
+	left: 0px;
+}
+
 .popup {
 	z-index: 100;
 	position: fixed;

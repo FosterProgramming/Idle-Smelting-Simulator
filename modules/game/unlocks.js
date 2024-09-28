@@ -13,7 +13,6 @@ export const Shop_Upgrades = {
 					"requires": "shop_click_damage_1",
 					"unlock": "shop_click_damage_2"
 				},
-*/
 	"shop_2_1": {
 					"name": "Reduces ore respawn time to 5s",
 					"cost": 10,
@@ -32,6 +31,20 @@ export const Shop_Upgrades = {
 					"requires": {"shop_ore_respawn": 2},
 					"unlock": ["shop_ore_respawn", 3]
 				},
+	
+	"shop_4_1": {
+					"name": "Doubles the speed of all miner robots",
+					"cost": 1000,
+					"requires": {"miner_automation": 1},
+					"unlock": ["shop_robot_speed", 1]
+	},
+	"shop_5_1": {
+					"name": "Buy second furnace",
+					"cost": 1,
+					"requires": {},
+					"unlock": ["furnace", 2]
+	}
+	*/
 	"shop_3_1": {
 					"name": "Purchase a robot that will mine for you",
 					"cost": 50,
@@ -50,17 +63,17 @@ export const Shop_Upgrades = {
 					"requires": {"shop_robot_damage": 1},
 					"unlock": ["shop_robot_damage", 2]
 	},
-	"shop_4_1": {
-					"name": "Doubles the speed of all miner robots",
-					"cost": 1000,
-					"requires": {"miner_automation": 1},
-					"unlock": ["shop_robot_speed", 1]
-	},
-	"shop_5_1": {
-					"name": "Buy second furnace",
-					"cost": 1,
+	"shop_6_1": {
+					"name": "Doubles the sell price of ingot A",
+					"cost": 10,
 					"requires": {},
-					"unlock": ["furnace", 2]
-	}
+					"unlock": ["shop_sell_price_A", 1]
+	},
+	"shop_6_2": {
+					"name": "Doubles the sell price of ingot A (again)",
+					"cost": 20,
+					"requires": {"shop_sell_price_A": 1},
+					"unlock": ["shop_sell_price_A", 2]
+	},
 
 }

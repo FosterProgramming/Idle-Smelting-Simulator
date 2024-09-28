@@ -19,10 +19,10 @@ export default {
     },
     "miner_timebank": 0,
     "total_time": 0,
-    "version": 0.03,
+    "version": 0.05,
     "stats": {
-        "ores_mined": 0,
-        "ingots_smelted": 0,
+        "ores_mined": {"total": 0},
+        "ingots_smelted": {"total": 0},
         "money_made": 0
     },
     "slow_update": 0

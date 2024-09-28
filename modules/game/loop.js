@@ -48,11 +48,11 @@ function updateGame(delta_time) {
 }
 
 function bigUpdate(delta_time) {
-	if (!checkProgress("miner_robot", 1)) {
+	if (!checkProgress("miner_robot", 1) && checkProgress("tab-mines")) {
 		for (var i = 0; i < Max_Ores - Object.keys(Game.active_layer.ores).length; i++) {
 			spawnOre()
 		}
-		Game.active_layer.respawnTime = respawnOreTime()
+		Game.active_layer.respawnTime = respawnOreTime(Game.active_layer.index)
 		return
 	}
 	var minerTime = getMinerTime()
@@ -70,7 +70,7 @@ function bigUpdate(delta_time) {
 }
 function basicUpdate(delta_time) {
 	respawnOre(delta_time)
-	if (checkProgress("miner_robot", 1) && Object.keys(Game.active_layer.ores).length > 0) {
+	if (checkProgress("mine_automation", 1) && Object.keys(Game.active_layer.ores).length > 0) {
 		idleMining(delta_time)
 	}
 }
@@ -81,17 +81,22 @@ function idleMining(delta_time) {
 	Game.miner_timebank += delta_time
 	while (Game.miner_timebank > minerTime) {
 		Game.miner_timebank -= minerTime
+		pushUniqueEventToQueue(["ROBOT_ORE_DAMAGE"])
 		damageOre(Object.keys(Game.active_layer.ores)[0], minerDamage)
+		//console.log(JSON.stringify(window.Ui_queue, null, 1))
 	}
 }
 
 function respawnOre(delta_time) {
+	if (!checkProgress("layer", 0)) {
+		return false
+	}
 	if (Object.keys(Game.active_layer.ores).length >= Max_Ores) {
 		return false
 	}
 	if (Game.active_layer.respawnTime === 0) {
 		spawnOre()
-		Game.active_layer.respawnTime = respawnOreTime()
+		Game.active_layer.respawnTime = respawnOreTime(Game.active_layer.index)
 	} else {
 		Game.active_layer.respawnTime = Math.max(0, Game.active_layer.respawnTime - delta_time)
 	}

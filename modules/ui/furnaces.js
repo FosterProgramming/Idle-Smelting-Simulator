@@ -1,6 +1,7 @@
 import {Smelter_Load_Time} from "../game/constants.js"
 import {startSmelter, emptySmelter} from "../game/smelters.js"
 import {getSmelterTime} from "../game/player_stats.js"
+import {addTabNotification} from "./tabs.js"
 
 export function loadAllFurnaces() {
 	for (const ore_type of Object.keys(Game.furnaces)) {
@@ -52,6 +53,9 @@ export function updateFurnaceHolding() {
 	}
 }
 export function updateFurnaceBar(ore_type) {
+	if (!document.getElementById("furnace_" + ore_type)) {
+		return
+	}
 	var div = document.querySelector("#furnace_" + ore_type + " .time_bar")
 	const furnace = Game.furnaces[ore_type]
 	var max_time = Smelter_Load_Time
@@ -93,6 +97,7 @@ export function updateFurnaceState(ore_type, new_state) {
 		button.removeAttribute("onmousedown");
 		div.classList.add("waiting")
 	} else if (new_state == "FINISHED") {
+		addTabNotification("tab-smelter")
 		div.classList.add("finished")
 		button.textContent = "Empty"
 		button.onclick = function() {
